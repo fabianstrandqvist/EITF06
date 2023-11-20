@@ -1,9 +1,18 @@
-<?php
+<?php 
+session_start();
+
+	include("connection1.php");
+	include("functions1.php");
+
+	$user_data = check_login($con);
+
+    
     $con = mysqli_connect('localhost', 'root'); // connect to database
     mysqli_select_db($con, 'shop'); // select database
     $sql = "SELECT * FROM products WHERE featured=1"; // select all products from database
     $featured = mysqli_query($con, $sql); // query database
     // $featured = $con->query($sql); // other way to query database
+
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +26,10 @@
     <link rel = "stylesheet" href="css/style.css">
 </head>
 <body>
+
+    <a href="logout1.php">Logout</a>
+    <br>
+    Hello, <?php echo $user_data['user_name']; ?>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
@@ -89,32 +102,6 @@
                 </a>
             </div>
         </div>
-
-
-    <!-- Sign Up Form -->
-    <a id="signupform">
-        <section class="my-4">
-            <div class="py-4">
-                <h2 class="text-center">Sign Up</h2>
-            </div>
-
-            <div class="w-50 m-auto"> 
-                <form action="signup.php" method="post">
-                    <div class="form-group"> 
-                        <label>Username: </label>
-                        <input type="text" name="username" autocomplete="off" class="form-control">
-                    </div>
-                    <div class="form-group"> 
-                        <label>Password: </label>
-                        <input type="text" name="password" autocomplete="off" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-success">Sign Up</button>
-                </form>
-            </div>
-        </section>
-    </a>
-
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"> </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>    <link rel="stylesheet" href="css/style.css">
