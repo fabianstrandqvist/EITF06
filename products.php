@@ -34,6 +34,26 @@ ini_set('display_errors', 1);
             $message = 'Product added to cart successfully';
         }
     }
+
+    if (isset($_POST['update_cart'])){
+        $update_quantity = $_POST['cart_quantity'];
+        $update_id = $_POST['cart_id'];
+        mysqli_query($con, "UPDATE `cart`SET quantity = '$update_quantity' WHERE id = '$update_id'");
+        $message[] = 'cart updated!';
+    }
+
+    if (isset($_GET['remove'])){ //dangerous! attacker can use a URL to remove cart item from user lol
+        $remove_id = $_GET['remove'];
+        mysqli_query($con, "DELETE FROM `cart` WHERE id = '$remove_id'");
+        header('location:products.php');
+    }
+
+    if (isset($_GET['delete_all'])){
+        mysqli_query($con, "DELETE FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'");
+        header('location:products.php');
+    }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +67,9 @@ ini_set('display_errors', 1);
     <link rel = "stylesheet" href="css/style.css">
 </head>
 <body>
-
+<a href="logout1.php">Logout</a>
+    <br>
+Hello, <?php echo $user_data['user_id']; ?>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
@@ -112,16 +134,38 @@ ini_set('display_errors', 1);
                 </thead>
                 <tbody>
                 <?php
-                
+                    $grand_total = 0;
                     $cart_query = mysqli_query($con, "SELECT * FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'"); // query database - im not sure if id will work here just yet
                     if(mysqli_num_rows($cart_query) > 0){
                         while($fetch_cart = mysqli_fetch_assoc($cart_query)){
                 ?>
+                    <tr>
+                        <td><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
+                        <td><?php echo $fetch_cart["name"]; ?></td>
+                        <td>$<?php echo $fetch_cart['price']; ?>/-</td>
+                        <td>
+                            <form action="" method="post">
+                                <input type="hidden" name="cart_id" value="<?php echo $fetch_cart['id']; ?>">
+                                <input type="number" min="1" name="cart_quantity" value="<?php echo $fetch_cart['quantity']; ?>">
+                                <input type="submit" name="update_cart" value="update" class="btn">
+                            </form>
+                        </td>
+                        <td>$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
+                        <td>
+                            <a href="products.php?remove=<?php echo $fetch_cart['id']; ?>" class="btn" onclick="return confirm('remove item from cart?');">remove</a>
+                        </td>
+                    </tr>
                     
                 <?php
+                    $grand_total += $sub_total;
                         };
                     };
                 ?>
+                <tr>
+                    <td colspan="4">grand total :</td>
+                    <td>$<?php echo $grand_total;?>/-</td>
+                    <td><a href="products.php?delete_all" onclick="return confirm('delete all from cart?');" class="btn">delete all</a></td>
+                </tr>
                 </tbody>
             </table>
         </div>
