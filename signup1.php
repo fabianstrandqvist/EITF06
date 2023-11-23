@@ -73,8 +73,8 @@ session_start();
 		<form method="post">
 			<div style="font-size: 20px;margin: 10px;color: white;">Signup</div>
 
-			<input id="text" type="text" name="user_name"><br><br>
-			<input id="text" type="password" name="password"><br><br>
+			<input id="text" type="text" name="user_name"  pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
+			<input id="text" type="password" name="password" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
 
 			<input id="button" type="submit" value="Signup"><br><br>
 
