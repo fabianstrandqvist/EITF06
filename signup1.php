@@ -11,7 +11,13 @@ session_start();
 		$user_name = $_POST['user_name'];
 		$password = $_POST['password'];
 
-		if(!empty($user_name) && !empty($password) && !is_numeric($user_name))
+		$uppercase = preg_match('@[A-Z]@', $password);
+		$lowercase = preg_match('@[a-z]@', $password);
+		$number    = preg_match('@[0-9]@', $password);
+
+		$valid = $uppercase && $lowercase && $number && strlen($password) >= 8;
+
+		if(!empty($user_name) && !empty($password) && !is_numeric($user_name) && $valid)
 		{
 
 			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -25,7 +31,8 @@ session_start();
 			die;
 		}else
 		{
-			echo "Please enter some valid information!";
+			echo "Password must be atleast 8 characters long, contain atleast an uppcase character
+			and one number";
 		}
 	}
 ?>
