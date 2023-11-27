@@ -105,7 +105,7 @@ Hello, <?php echo $user_data['user_id']; ?>
                         <!-- php to display fetch_product title, image, price -->
                         <h4> <?= $fetch_product['title']; ?> </h4> 
                         <img src="<?= $fetch_product["image"]; ?>" alt="<?= $fetch_product['title']; ?>" class="img-fluid pb-4" style="width:250px; height:200px; object-fit:cover;"/>
-                        <p class="price">$<?= $fetch_product['price']; ?> </p>
+                        <p class="price">$<?= number_format($fetch_product['price']); ?> </p>
                         <p class="desc"><?= $fetch_product['description']; ?> </p>
                         <p class="bname"><?= $fetch_product['brandname']; ?> </p>
                         <input type="number" min="1" name="product_quantity" value="1">
@@ -122,15 +122,15 @@ Hello, <?php echo $user_data['user_id']; ?>
         </div>
 
         <div class="shopping-cart">
-            <h1 class="header">shopping cart</h1>  
+            <h1 class="header">Shopping Cart</h1>  
             
             <table>
                 <thead>
-                    <th>image</th>
-                    <th>name</th>
-                    <th>price</th>
-                    <th>total price</th>
-                    <th>action</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Total Price</th>
+                    <th>Action</th>
                 </thead>
                 <tbody>
                 <?php
@@ -142,7 +142,7 @@ Hello, <?php echo $user_data['user_id']; ?>
                     <tr>
                         <td><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
                         <td><?php echo $fetch_cart["name"]; ?></td>
-                        <td>$<?php echo $fetch_cart['price']; ?>/-</td>
+                        <td>$<?php echo number_format($fetch_cart['price']); ?>/-</td>
                         <td>
                             <form action="" method="post">
                                 <input type="hidden" name="cart_id" value="<?php echo $fetch_cart['id']; ?>">
@@ -162,7 +162,7 @@ Hello, <?php echo $user_data['user_id']; ?>
                     };
                 ?>
                 <tr>
-                    <td colspan="4">grand total :</td>
+                    <td colspan="4">Grand Total :</td>
                     <td>$<?php echo number_format($grand_total);?>/-</td>
                     <td><a href="products.php?delete_all" onclick="return confirm('delete all from cart?');" class="btn">delete all</a></td>
                 </tr>
