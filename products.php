@@ -157,13 +157,13 @@ Hello, <?php echo $user_data['user_id']; ?>
                     </tr>
                     
                 <?php
-                    $grand_total += $sub_total;
+                    $grand_total += intval(str_replace(',', '', $sub_total));
                         };
                     };
                 ?>
                 <tr>
                     <td colspan="4">grand total :</td>
-                    <td>$<?php echo $grand_total;?>/-</td>
+                    <td>$<?php echo number_format($grand_total);?>/-</td>
                     <td><a href="products.php?delete_all" onclick="return confirm('delete all from cart?');" class="btn">delete all</a></td>
                 </tr>
                 </tbody>
