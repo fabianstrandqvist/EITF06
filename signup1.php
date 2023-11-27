@@ -31,8 +31,8 @@ session_start();
 			die;
 		}else
 		{
-			echo "Password must be atleast 8 characters long, contain atleast an uppcase character
-			and one number";
+			echo "Password must be at least 8 characters long, contain at least one upper case character,
+			and one number.";
 		}
 	}
 ?>
