@@ -27,7 +27,10 @@ ini_set('display_errors', 1);
         $select_cart = mysqli_query($con, "SELECT * FROM `cart` WHERE name = '$product_name' AND user_id = '" . $user_data['user_id'] . "'");
     
         if (mysqli_num_rows($select_cart) > 0) {
-            $message = 'Product already added to cart';
+            // $message = 'Product already added to cart';
+            $temp_quantity = mysqli_fetch_assoc($select_cart)['quantity']; // get current quantity
+            $new_quantity = $product_quantity + $temp_quantity; // add inputted quantity to current quantity
+            mysqli_query($con, "UPDATE `cart`SET quantity = '$new_quantity' WHERE name = '$product_name'");
         } else {
             mysqli_query($con, "INSERT INTO `cart` (user_id, name, price, image, quantity) VALUES 
             ('" . $user_data['user_id'] . "', '$product_name', '$product_price', '$product_image', '$product_quantity')");
@@ -39,7 +42,7 @@ ini_set('display_errors', 1);
         $update_quantity = $_POST['cart_quantity'];
         $update_id = $_POST['cart_id'];
         mysqli_query($con, "UPDATE `cart`SET quantity = '$update_quantity' WHERE id = '$update_id'");
-        $message[] = 'cart updated!';
+        $message = 'Cart updated!';
     }
 
     if (isset($_GET['remove'])){ //dangerous! attacker can use a URL to remove cart item from user lol
@@ -69,7 +72,7 @@ ini_set('display_errors', 1);
 <body>
 <a href="logout1.php">Logout</a>
     <br>
-Hello, <?php echo $user_data['user_name']; ?>
+    Hello, <?php echo $user_data['user_name']; ?>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
@@ -100,6 +103,7 @@ Hello, <?php echo $user_data['user_name']; ?>
                 <h2 class="text-center">All Products</h2>
                 <?php
                     while($fetch_product = mysqli_fetch_assoc($featured)):
+                    // TODO: change this to all products not just featured?
                 ?>
                     <form method="post" class="col-md-5" action="">
                         <!-- php to display fetch_product title, image, price -->
@@ -112,7 +116,7 @@ Hello, <?php echo $user_data['user_name']; ?>
                         <input type="hidden" name="product_image" value="<?php echo $fetch_product["image"]; ?>">
                         <input type="hidden" name="product_name" value="<?php echo $fetch_product["title"]; ?>">
                         <input type="hidden" name="product_price" value="<?php echo $fetch_product["price"]; ?>">
-                        <input type="submit" value="add to cart" name="add_to_cart" class="btn">
+                        <input type="submit" value="Add To Cart" style="border: 2px solid black; background:lightgreen" name="add_to_cart" class="btn">
                     </form>
                     
                     <!-- Form for adding item to cart - DELETED -->
@@ -122,13 +126,14 @@ Hello, <?php echo $user_data['user_name']; ?>
         </div>
 
         <div class="shopping-cart">
-            <h1 class="header">Shopping Cart</h1>  
+            <h1 class="header" style="padding-top:50px; padding-left:50px">Shopping Cart</h1>  
             
-            <table>
+            <table style="padding-left:50px">
                 <thead>
                     <th>Image</th>
                     <th>Name</th>
                     <th>Price</th>
+                    <th>Quantity</th>
                     <th>Total Price</th>
                     <th>Action</th>
                 </thead>
@@ -140,19 +145,19 @@ Hello, <?php echo $user_data['user_name']; ?>
                         while($fetch_cart = mysqli_fetch_assoc($cart_query)){
                 ?>
                     <tr>
-                        <td><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
-                        <td><?php echo $fetch_cart["name"]; ?></td>
-                        <td>$<?php echo number_format($fetch_cart['price']); ?>/-</td>
+                        <td style="width:170px"><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
+                        <td style="width:125px"><?php echo $fetch_cart["name"]; ?></td>
+                        <td style="width:100px">$<?php echo number_format($fetch_cart['price']); ?>/-</td>
                         <td>
                             <form action="" method="post">
                                 <input type="hidden" name="cart_id" value="<?php echo $fetch_cart['id']; ?>">
                                 <input type="number" min="1" name="cart_quantity" value="<?php echo $fetch_cart['quantity']; ?>">
-                                <input type="submit" name="update_cart" value="update" class="btn">
+                                <input type="submit" name="update_cart" style="border: 2px solid black; width:100px" value="Update" class="btn">
                             </form>
                         </td>
-                        <td>$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
+                        <td style="width:150px; padding-left:10px">$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
                         <td>
-                            <a href="products.php?remove=<?php echo $fetch_cart['id']; ?>" class="btn" onclick="return confirm('remove item from cart?');">remove</a>
+                            <a href="products.php?remove=<?php echo $fetch_cart['id']; ?>" class="btn" style="border: 2px solid black; width:100px; background:red" onclick="return confirm('Remove Item From Cart?');">Remove</a>
                         </td>
                     </tr>
                     
@@ -161,10 +166,10 @@ Hello, <?php echo $user_data['user_name']; ?>
                         };
                     };
                 ?>
-                <tr>
+                <tr style="height:75px">
                     <td colspan="4">Grand Total :</td>
                     <td>$<?php echo number_format($grand_total);?>/-</td>
-                    <td><a href="products.php?delete_all" onclick="return confirm('delete all from cart?');" class="btn">delete all</a></td>
+                    <td><a href="products.php?delete_all" onclick="return confirm('Delete All From Cart?');" style="border: 2px solid black; width:100px; background:red" class="btn">Delete All</a></td>
                 </tr>
                 </tbody>
             </table>
