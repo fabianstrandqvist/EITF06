@@ -10,6 +10,7 @@ session_start();
 		//something was posted
 		$user_name = $_POST['user_name'];
 		$password = $_POST['password'];
+		$address = $_POST['address'];
 
 		$uppercase = preg_match('@[A-Z]@', $password);
 		$lowercase = preg_match('@[a-z]@', $password);
@@ -17,13 +18,13 @@ session_start();
 
 		$valid = $uppercase && $lowercase && $number && strlen($password) >= 8;
 
-		if(!empty($user_name) && !empty($password) && !is_numeric($user_name) && $valid)
+		if(!empty($user_name) && !empty($password) && !empty($address) && !is_numeric($user_name) && $valid)
 		{
 
 			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 			//save to database
 			$user_id = random_num(20);
-			$query = "insert into users (user_id,user_name,password) values ('$user_id','$user_name','$hashed_password')";
+			$query = "insert into users (user_id,user_name,password,address) values ('$user_id','$user_name','$hashed_password', '$address')";
 
 			mysqli_query($con, $query);
 
@@ -80,8 +81,14 @@ session_start();
 		<form method="post">
 			<div style="font-size: 20px;margin: 10px;color: white;">Signup</div>
 
+			<label for="fname">Username:</label>
 			<input id="text" type="text" name="user_name"  pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
+
+			<label for="fname">Password:</label>
 			<input id="text" type="password" name="password" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
+
+			<label for="fname">Address:</label>
+			<input id="text" type="address" name="address"><br><br>
 
 			<input id="button" type="submit" value="Signup"><br><br>
 
