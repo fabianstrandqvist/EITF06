@@ -10,19 +10,23 @@ require_once 'startsession.php';
 		$password = $_POST['password'];
 		$address = $_POST['address'];
 
+		$sanitized_user_name = mysqli_real_escape_string($con, $user_name);
+		$sanitized_password = mysqli_real_escape_string($con, $password);
+		$sanitized_address = mysqli_real_escape_string($con, $address);	
+
 		$uppercase = preg_match('@[A-Z]@', $password);
 		$lowercase = preg_match('@[a-z]@', $password);
 		$number    = preg_match('@[0-9]@', $password);
 
 		$valid = $uppercase && $lowercase && $number && strlen($password) >= 8;
 
-		if(!empty($user_name) && !empty($password) && !empty($address) && !is_numeric($user_name) && $valid)
+		if(!empty($sanitized_user_name) && !empty($sanitized_password) && !empty($sanitized_address) && !is_numeric($user_name) && $valid)
 		{
 
-			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+			$hashed_password = password_hash($sanitized_password, PASSWORD_DEFAULT);
 			//save to database
 			$user_id = random_num(20);
-			$query = "insert into users (user_id,user_name,password,address) values ('$user_id','$user_name','$hashed_password', '$address')";
+			$query = "insert into users (user_id,user_name,password,address) values ('" . $user_id . "','" . $sanitized_user_name . "','" . $hashed_password . "', '" . $sanitized_address . "')";
 
 			mysqli_query($con, $query);
 
