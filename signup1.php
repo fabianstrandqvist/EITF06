@@ -1,8 +1,6 @@
 <?php 
-session_start();
 
-	include("connection1.php");
-	include("functions1.php");
+require_once 'startsession.php';
 
 
 	if($_SERVER['REQUEST_METHOD'] == "POST")
