@@ -9,11 +9,14 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     $user_name = $_POST['user_name'];
     $password = $_POST['password'];
 
-    if(!empty($user_name) && !empty($password) && !is_numeric($user_name))
+    $sanitized_user_name = mysqli_real_escape_string($con, $user_name);
+    $sanitized_password = mysqli_real_escape_string($con, $password);
+
+    if(!empty($sanitized_user_name) && !empty($sanitized_password) && !is_numeric($sanitized_user_name))
     {
 
         //read from database
-        $query = "select * from users where user_name = '$user_name' limit 1";
+        $query = "select * from users where user_name = '$sanitized_user_name' limit 1";
 
         $result = mysqli_query($con, $query);
 
