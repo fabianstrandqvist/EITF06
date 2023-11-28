@@ -1,13 +1,6 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-
-    session_start();
-
-    include("connection1.php");
-    include("functions1.php");
+require_once 'startsession.php';
 
     $user_data = check_login($con);
 
