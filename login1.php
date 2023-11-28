@@ -54,8 +54,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         <form method="post">
             <div>Login</div>
 
+            <label for="fname">Username:</label>
             <input type="text" name="user_name" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
-            <input type="password" name="password" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
+
+            <label for="fname">Password:</label>
+            <input type="text" name="password" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
 
             <input type="submit" value="Login"><br><br>
 

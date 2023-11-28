@@ -42,17 +42,17 @@ require_once 'startsession.php';
             <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
             <a class="nav-link" href="#signupform">Sign Up</a>
             </li>
 
             <li class="nav-item">
             <a class="nav-link" href="#">Login In</a>
-            </li>
+            </li> -->
 
             <!-- TODO: implement this button to direct to products.php -->
             <li class="nav-item">
-            <a class="nav-link" href="#">Shop</a>
+            <a class="nav-link" href="products.php">Shop</a>
             </li>
 
             <!-- Optional Dropdown -->
