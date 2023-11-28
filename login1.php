@@ -49,20 +49,47 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     <title>Login</title>
 </head>
 <body>
-    <style>
-    </style>
+    <style type="text/css"> 
+	
+	#text{
+
+		height: 25px;
+		border-radius: 5px;
+		padding: 4px;
+		border: solid thin #aaa;
+		width: 100%;
+	}
+
+	#button{
+
+		padding: 10px;
+		width: 100px;
+		color: white;
+		background-color: lightblue;
+		border: none;
+	}
+
+	#box{
+
+		background-color: grey;
+		margin: auto;
+		width: 300px;
+		padding: 20px;
+	}
+
+	</style>
 
     <div id="box">
         <form method="post">
-            <div>Login</div>
+            <div style="font-size: 20px;margin: 10px;color: white;">Login</div>
 
             <label for="fname">Username:</label>
             <input type="text" name="user_name" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
 
             <label for="fname">Password:</label>
-            <input type="text" name="password" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
+            <input type="password" name="password" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
 
-            <input type="submit" value="Login"><br><br>
+            <input id="button" type="submit" value="Login"><br><br>
 
             <a href="signup1.php">Click to Signup</a><br><br>
     

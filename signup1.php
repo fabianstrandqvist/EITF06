@@ -15,8 +15,9 @@ session_start();
 		$uppercase = preg_match('@[A-Z]@', $password);
 		$lowercase = preg_match('@[a-z]@', $password);
 		$number    = preg_match('@[0-9]@', $password);
+		$special   = preg_match('@[\!\@\#\$\%\^\&\*\(\)\_\+]@', $password);
 
-		$valid = $uppercase && $lowercase && $number && strlen($password) >= 8;
+		$valid = $uppercase && $lowercase && $number && $special && strlen($password) >= 8;
 
 		if(!empty($user_name) && !empty($password) && !empty($address) && !is_numeric($user_name) && $valid)
 		{
@@ -32,8 +33,8 @@ session_start();
 			die;
 		}else
 		{
-			echo "Password must be at least 8 characters long, contain at least one upper case character,
-			and one number.";
+			echo "Password must be at least 8 characters long, contain at least one upper case character, one special character,
+			and one number. Address is required.";
 		}
 	}
 ?>
@@ -88,9 +89,9 @@ session_start();
 			<input id="text" type="password" name="password" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
 
 			<label for="fname">Address:</label>
-			<input id="text" type="address" name="address"><br><br>
+			<input id="text" type="text" name="address"><br><br>
 
-			<input id="button" type="submit" value="Signup"><br><br>
+			<input id="button" type="submit" value="Sign up"><br><br>
 
 			<a href="login1.php">Click to Login</a><br><br>
 		</form>
