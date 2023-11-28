@@ -27,7 +27,7 @@ require_once 'startsession.php';
 
     <a href="logout1.php">Logout</a>
     <br>
-    Hello, <?php echo $user_data['user_id']; ?>
+    Hello, <?php echo $user_data['user_name']; ?>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
