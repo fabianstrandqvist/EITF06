@@ -8,12 +8,12 @@
 
     ]); //is it enough to only have this in the php.ini file?
 
-    /*if ($_SERVER['HTTPS'] !== 'on') {
+    if ($_SERVER['HTTPS'] !== 'on') {
         $redirect_url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         header("Location: $redirect_url", true, 301);
         exit();
     } //might have to better this code - experimental - redirects to https always!
-    */
+    
 
     session_start();
 
