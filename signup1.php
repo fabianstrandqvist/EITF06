@@ -2,6 +2,11 @@
 
 require_once 'startsession.php';
 
+	// Function to check if a password is common
+	function isCommonPassword($password) {
+		$commonPasswords = file(__DIR__ . '/commonpasswords.txt', FILE_IGNORE_NEW_LINES);
+		return in_array($password, $commonPasswords);
+	}
 
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
@@ -10,27 +15,40 @@ require_once 'startsession.php';
 		$password = $_POST['password'];
 		$address = $_POST['address'];
 
+		$sanitized_user_name = mysqli_real_escape_string($con, $user_name);
+		$sanitized_password = mysqli_real_escape_string($con, $password);
+		$sanitized_address = mysqli_real_escape_string($con, $address);	
+
 		$uppercase = preg_match('@[A-Z]@', $password);
 		$lowercase = preg_match('@[a-z]@', $password);
 		$number    = preg_match('@[0-9]@', $password);
+		$special   = preg_match('@[\!\@\#\$\%\^\&\*\(\)\_\+]@', $password);
 
-		$valid = $uppercase && $lowercase && $number && strlen($password) >= 8;
+		$valid = $uppercase && $lowercase && $number && $special && strlen($password) >= 8;
 
-		if(!empty($user_name) && !empty($password) && !empty($address) && !is_numeric($user_name) && $valid)
+		if(!empty($sanitized_user_name) && !empty($sanitized_password) && !is_numeric($user_name) && $valid)
 		{
+			if (isCommonPassword($password)) {
+				echo "Password is too common.";
+			}
+			elseif (empty($sanitized_address)) {
+				echo "Address is required.";
+			}
+			else{
+				$hashed_password = password_hash($sanitized_password, PASSWORD_DEFAULT);
+				//save to database
+				$user_id = random_num(20);
+				$query = "insert into users (user_id,user_name,password,address) values ('" . $user_id . "','" . $sanitized_user_name . "','" . $hashed_password . "', '" . $sanitized_address . "')";
 
-			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-			//save to database
-			$user_id = random_num(20);
-			$query = "insert into users (user_id,user_name,password,address) values ('$user_id','$user_name','$hashed_password', '$address')";
+				mysqli_query($con, $query);
 
-			mysqli_query($con, $query);
-
-			header("Location: login1.php");
-			die;
-		}else
+				header("Location: login1.php");
+				die;
+			}
+		}
+		else
 		{
-			echo "Password must be at least 8 characters long, contain at least one upper case character,
+			echo "Password must be at least 8 characters long, contain at least one upper case character, one special character,
 			and one number.";
 		}
 	}
@@ -86,9 +104,9 @@ require_once 'startsession.php';
 			<input id="text" type="password" name="password" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
 
 			<label for="fname">Address:</label>
-			<input id="text" type="address" name="address"><br><br>
+			<input id="text" type="text" name="address"><br><br>
 
-			<input id="button" type="submit" value="Signup"><br><br>
+			<input id="button" type="submit" value="Sign up"><br><br>
 
 			<a href="login1.php">Click to Login</a><br><br>
 		</form>
