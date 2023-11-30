@@ -2,9 +2,16 @@
 
 require_once 'startsession.php';
 
+// Command to test for invalid tokens: curl -X POST -d "user_name=test&password=test&csrf_token=invalid_token" localhost/EITF06/signup1.php
+// CSRF token generation
+$csrfToken = $_SESSION['csrf_token'];
 
 if($_SERVER['REQUEST_METHOD'] == "POST")
 {
+    // Verify CSRF token
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("CSRF token validation failed.");
+    }
     //something was posted
     $user_name = $_POST['user_name'];
     $password = $_POST['password'];
@@ -90,6 +97,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
             <label for="fname">Password:</label>
             <input type="password" name="password" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
 
+            <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
             <input id="button" type="submit" value="Login"><br><br>
 
             <a href="signup1.php">Click to Signup</a><br><br>
