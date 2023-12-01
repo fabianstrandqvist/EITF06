@@ -16,13 +16,14 @@ require_once 'startsession.php';
         $product_price = mysqli_real_escape_string($con, $_POST['product_price']);
         $product_image = mysqli_real_escape_string($con, $_POST['product_image']);
         $product_quantity = mysqli_real_escape_string($con, $_POST['product_quantity']);
+        $xsssafe_product_quantity = htmlspecialchars($product_quantity, ENT_QUOTES, 'UTF-8');
     
         $select_cart = mysqli_query($con, "SELECT * FROM `cart` WHERE name = '$product_name' AND user_id = '" . $user_data['user_id'] . "'");
     
         if (mysqli_num_rows($select_cart) > 0) {
             // $message = 'Product already added to cart';
             $temp_quantity = mysqli_fetch_assoc($select_cart)['quantity']; // get current quantity
-            $new_quantity = $product_quantity + $temp_quantity; // add inputted quantity to current quantity
+            $new_quantity = $xsssafe_product_quantity + $temp_quantity; // add inputted quantity to current quantity
             mysqli_query($con, "UPDATE `cart`SET quantity = '$new_quantity' WHERE name = '$product_name'");
         } else {
             mysqli_query($con, "INSERT INTO `cart` (user_id, name, price, image, quantity) VALUES 
@@ -44,7 +45,7 @@ require_once 'startsession.php';
         header('location:products.php');
     }
 
-    if (isset($_GET['delete_all'])){
+    if (isset($_GET['delete_all'])){ //dangerous! attacker can use a URL to remove cart item from user lol
         mysqli_query($con, "DELETE FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'");
         header('location:products.php');
     }
