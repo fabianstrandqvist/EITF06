@@ -6,6 +6,9 @@
 
 	require_once 'startsession.php';
 
+// CSRF token generation
+$csrfToken = $_SESSION['csrf_token'];
+
 	// Function to check if a password is common
 	function isCommonPassword($password) {
 		$commonPasswords = file(__DIR__ . '/commonpasswords.txt', FILE_IGNORE_NEW_LINES);
@@ -14,6 +17,11 @@
 
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
+		// Verify CSRF token
+		if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $csrfToken) {
+			die("CSRF token validation failed.");
+		}
+
 		//something was posted
 		$user_name = $_POST['user_name'];
 		$password = $_POST['password'];
@@ -110,6 +118,8 @@
 
 			<label for="fname">Address:</label>
 			<input id="text" type="text" name="address"><br><br>
+			<input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
+
 
 			<input id="button" type="submit" value="Sign up"><br><br>
 

@@ -2,6 +2,9 @@
 
 require_once 'startsession.php';
 
+// CSRF token generation
+$csrfToken = $_SESSION['csrf_token'];
+
     $user_data = check_login($con);
 
     $con = mysqli_connect('localhost', 'root'); // connect to database
@@ -11,6 +14,10 @@ require_once 'startsession.php';
     // $featured = $con->query($sql); // other way to query database
 
     if (isset($_POST['add_to_cart'])) {
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die("CSRF token validation failed.");
+        }
         // Validate and sanitize user input
         $product_name = mysqli_real_escape_string($con, $_POST['product_name']);
         $product_price = mysqli_real_escape_string($con, $_POST['product_price']);
@@ -33,6 +40,10 @@ require_once 'startsession.php';
     }
 
     if (isset($_POST['update_cart'])){
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die("CSRF token validation failed.");
+        }
         $update_quantity = $_POST['cart_quantity'];
         $update_id = $_POST['cart_id'];
         mysqli_query($con, "UPDATE `cart`SET quantity = '$update_quantity' WHERE id = '$update_id'");
@@ -40,12 +51,20 @@ require_once 'startsession.php';
     }
 
     if (isset($_GET['remove'])){ //dangerous! attacker can use a URL to remove cart item from user lol
+        // Verify CSRF token
+        if (!isset($_GET['csrf_token']) || $_GET['csrf_token'] !== $_SESSION['csrf_token']) {
+            die("CSRF token validation failed.");
+        }
         $remove_id = $_GET['remove'];
         mysqli_query($con, "DELETE FROM `cart` WHERE id = '$remove_id'");
         header('location:products.php');
     }
 
-    if (isset($_GET['delete_all'])){ //dangerous! attacker can use a URL to remove cart item from user lol
+    if (isset($_GET['delete_all'])){
+        // Verify CSRF token
+        if (!isset($_GET['csrf_token']) || $_GET['csrf_token'] !== $_SESSION['csrf_token']) {
+            die("CSRF token validation failed.");
+        }
         mysqli_query($con, "DELETE FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'");
         header('location:products.php');
     }
@@ -100,6 +119,7 @@ require_once 'startsession.php';
                     // TODO: change this to all products not just featured?
                 ?>
                     <form method="post" class="col-md-5" action="">
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                         <!-- php to display fetch_product title, image, price -->
                         <h4> <?= $fetch_product['title']; ?> </h4> 
                         <img src="<?= $fetch_product["image"]; ?>" alt="<?= $fetch_product['title']; ?>" class="img-fluid pb-4" style="width:250px; height:200px; object-fit:cover;"/>
@@ -144,6 +164,7 @@ require_once 'startsession.php';
                         <td style="width:100px">$<?php echo number_format($fetch_cart['price']); ?>/-</td>
                         <td>
                             <form action="" method="post">
+                                <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                                 <input type="hidden" name="cart_id" value="<?php echo $fetch_cart['id']; ?>">
                                 <input type="number" min="1" name="cart_quantity" value="<?php echo $fetch_cart['quantity']; ?>">
                                 <input type="submit" name="update_cart" style="border: 2px solid black; width:100px" value="Update" class="btn">
@@ -151,7 +172,7 @@ require_once 'startsession.php';
                         </td>
                         <td style="width:150px; padding-left:10px">$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
                         <td>
-                            <a href="products.php?remove=<?php echo $fetch_cart['id']; ?>" class="btn" style="border: 2px solid black; width:100px; background:red" onclick="return confirm('Remove Item From Cart?');">Remove</a>
+                            <a href="products.php?remove=<?php echo $fetch_cart['id']; ?>&csrf_token=<?php echo $csrfToken; ?>" class="btn" style="border: 2px solid black; width:100px; background:red" onclick="return confirm('Remove Item From Cart?');">Remove</a>
                         </td>
                     </tr>
                     
@@ -163,7 +184,7 @@ require_once 'startsession.php';
                 <tr style="height:75px">
                     <td colspan="4">Grand Total :</td>
                     <td>$<?php echo number_format($grand_total);?>/-</td>
-                    <td><a href="products.php?delete_all" onclick="return confirm('Delete All From Cart?');" style="border: 2px solid black; width:100px; background:red" class="btn">Delete All</a></td>
+                    <td><a href="products.php?delete_all&csrf_token=<?php echo $csrfToken; ?>" onclick="return confirm('Delete All From Cart?');" style="border: 2px solid black; width:100px; background:red" class="btn">Delete All</a></td>
                 </tr>
                 </tbody>
             </table>

@@ -30,6 +30,11 @@
     if (session_status() == PHP_SESSION_ACTIVE) {
         session_regenerate_id();
     } //this should in theory protect a little against CSRF
+
+    // Check if CSRF token is not set, generate one
+    if (!isset($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
     
     $_SESSION['ServGen'] = true;
 
