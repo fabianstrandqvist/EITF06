@@ -1,6 +1,13 @@
 <?php 
 
-require_once 'startsession.php';
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+
+
+	require_once 'startsession.php';
+
+// CSRF token generation
+$csrfToken = $_SESSION['csrf_token'];
 
 	// Function to check if a password is common
 	function isCommonPassword($password) {
@@ -10,12 +17,18 @@ require_once 'startsession.php';
 
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
+		// Verify CSRF token
+		if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $csrfToken) {
+			die("CSRF token validation failed.");
+		}
+
 		//something was posted
 		$user_name = $_POST['user_name'];
 		$password = $_POST['password'];
 		$address = $_POST['address'];
 
-		$sanitized_user_name = mysqli_real_escape_string($con, $user_name);
+		$sql_sanitized_user_name = mysqli_real_escape_string($con, $user_name);
+		$xss_sanitized_user_name = htmlspecialchars($sql_sanitized_user_name, ENT_QUOTES, 'UTF-8');
 		$sanitized_password = mysqli_real_escape_string($con, $password);
 		$sanitized_address = mysqli_real_escape_string($con, $address);	
 
@@ -26,7 +39,7 @@ require_once 'startsession.php';
 
 		$valid = $uppercase && $lowercase && $number && $special && strlen($password) >= 8;
 
-		if(!empty($sanitized_user_name) && !empty($sanitized_password) && !is_numeric($user_name) && $valid)
+		if(!empty($xss_sanitized_user_name) && !empty($sanitized_password) && !is_numeric($user_name) && $valid)
 		{
 			if (isCommonPassword($password)) {
 				echo "Password is too common.";
@@ -38,7 +51,7 @@ require_once 'startsession.php';
 				$hashed_password = password_hash($sanitized_password, PASSWORD_DEFAULT);
 				//save to database
 				$user_id = random_num(20);
-				$query = "insert into users (user_id,user_name,password,address) values ('" . $user_id . "','" . $sanitized_user_name . "','" . $hashed_password . "', '" . $sanitized_address . "')";
+				$query = "insert into users (user_id,user_name,password,address) values ('" . $user_id . "','" . $xss_sanitized_user_name . "','" . $hashed_password . "', '" . $sanitized_address . "')";
 
 				mysqli_query($con, $query);
 
@@ -105,6 +118,8 @@ require_once 'startsession.php';
 
 			<label for="fname">Address:</label>
 			<input id="text" type="text" name="address"><br><br>
+			<input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
+
 
 			<input id="button" type="submit" value="Sign up"><br><br>
 
