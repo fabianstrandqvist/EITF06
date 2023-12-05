@@ -58,11 +58,70 @@
         </tbody>
     </table>
         
-    <!-- Button does not do anything yet -->
-    <div style="padding-left:650px">
-        <input id="button" type="submit" value="Pay Now" style="border: 2px solid black; border-radius: 10px; background:lightgreen; padding:15px"><br><br>
-    </div>
 
+    <div style="padding-left: 20px;">
+            <label for="transactionId">Transaction ID:</label>
+            <input type="text" id="transactionId" placeholder="Enter Transaction ID">
+            <button id="fetchButton" style="border: 2px solid black; border-radius: 10px; background: lightgreen; padding: 10px;">Fetch Transaction</button>
+        </div>
+
+        <div id="receiptContainer" style="padding-left: 20px; padding-top: 20px;">
+          <h2 class="header" style="color: green">Receipt</h2>
+            <div id="receiptContent"></div>
+        </div>
+
+
+    <script>
+        async function fetchTransaction(transactionId){
+            try{
+                const response = await fetch(`http://localhost:3000/getTransaction`, {
+                     method: 'POST',
+                     headers: {
+                     'Content-Type': 'application/json',
+                    },
+                     body: JSON.stringify({ transactionId }),
+                });
+                const data     = await response.json();
+                
+                console.log(data);
+                displayReceipt(data);
+                }   catch (error){
+                console.error('Error fetching transaction:', error);
+            }
+        }
+        function displayReceipt(data) {
+        const receiptContainer = document.getElementById('receiptContainer');
+        const receiptContent = document.getElementById('receiptContent');
+
+        // Clear previous content
+        receiptContent.innerHTML = '';
+
+        if (data.error) {
+            // Display error message
+            receiptContent.innerText = `Error: ${data.error}`;
+        } else if (data.transaction) {
+            // Display transaction details
+            const transaction = data.transaction;
+            const transactionHTML = `
+                <p>Sender: ${transaction.sender}</p>
+                <p>Recipient: ${transaction.recipient}</p>
+                <p>Amount: ${transaction.amount}</p>
+                <p>Timestamp: ${transaction.timestamp}</p>
+                <p>Transaction ID: ${transaction.txidString}</p>`;
+            receiptContent.innerHTML = transactionHTML;
+        }
+    }
+
+        document.getElementById('fetchButton').addEventListener('click', function(){
+            const transactionId = document.getElementById('transactionId').value;
+
+            if(transactionId.trim() !== ''){
+                fetchTransaction(transactionId);
+            } else {
+                alert('Please enter a valid Transaction ID.');
+            }
+        });
+    </script>
 
     <h2 class="header" style="padding-top:50px; padding-left:50px; color:red">**Add Payment Stuff Here**</h2>  
 
