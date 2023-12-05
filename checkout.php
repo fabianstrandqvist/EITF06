@@ -19,7 +19,7 @@
     <title>Checkout</title>
 </head>
 <body>
-    <a href="products.php">Back to Shopping Cart</a><br><br>
+    <a href="products.php" style="padding-left:30px;">Back to Shopping Cart</a><br><br>
 
     <h1 class="header" style="padding-left:50px">Checkout</h1>  
 
@@ -43,7 +43,7 @@
                 <td style="width:125px"><?php echo $fetch_cart["name"]; ?></td>
                 <td style="width:100px">$<?php echo number_format($fetch_cart['price']); ?>/-</td>
                 <td style="width:50px"><?php echo $fetch_cart["quantity"]; ?></td>
-                <td style="width:150px; padding-left:10px">$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
+                <td style="width:150px; padding-left:50px">$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
             </tr>
             
         <?php
@@ -59,16 +59,53 @@
     </table>
         
 
-    <div style="padding-left: 20px;">
+    <div style="padding-left: 75px; padding-bottom:30px;">
             <label for="transactionId">Transaction ID:</label>
             <input type="text" id="transactionId" placeholder="Enter Transaction ID">
             <button id="fetchButton" style="border: 2px solid black; border-radius: 10px; background: lightgreen; padding: 10px;">Fetch Transaction</button>
         </div>
 
-        <div id="receiptContainer" style="padding-left: 20px; padding-top: 20px;">
-          <h2 class="header" style="color: green">Receipt</h2>
+        <hr class="dashed-line">     
+
+        <div id="receiptContainer" style="padding-left: 50px; padding-top: 20px;">
+          <h2 class="header" style="color: green">Receipt:</h2>
             <div id="receiptContent"></div>
         </div>
+
+        <table style="padding-left:50px">
+            <thead>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+            </thead>
+            <tbody>
+            <?php
+                $grand_total = 0;
+                $cart_query = mysqli_query($con, "SELECT * FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'"); // query database - im not sure if id will work here just yet
+                if(mysqli_num_rows($cart_query) > 0){
+                    while($fetch_cart = mysqli_fetch_assoc($cart_query)){
+            ?>
+                <tr>
+                    <td style="width:170px"><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
+                    <td style="width:125px"><?php echo $fetch_cart["name"]; ?></td>
+                    <td style="width:100px">$<?php echo number_format($fetch_cart['price']); ?>/-</td>
+                    <td style="width:50px"><?php echo $fetch_cart["quantity"]; ?></td>
+                    <td style="width:150px; padding-left:50px">$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
+                </tr>
+                
+            <?php
+                $grand_total += intval(str_replace(',', '', $sub_total));
+                    };
+                };
+            ?>
+            <tr style="height:75px">
+                <td colspan="4">Grand Total :</td>
+                <td>$<?php echo number_format($grand_total);?>/-</td>
+            </tr>
+            </tbody>
+        </table>
 
 
     <script>
@@ -123,9 +160,10 @@
         });
     </script>
 
-    <h2 class="header" style="padding-top:50px; padding-left:50px; color:red">**Add Payment Stuff Here**</h2>  
-
     <!-- TODO: clear cart after selecting button to pay -->
+
+    <a href="index.php" style="padding-left:30px">Back to Home</a><br><br>
+
 
 </body>
 </html>
