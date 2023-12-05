@@ -63,9 +63,12 @@ require_once 'startsession.php';
     <link rel = "stylesheet" href="css/style.css">
 </head>
 <body>
-<a href="logout1.php">Logout</a>
-    <br>
-    Hello, <?php echo $user_data['user_name']; ?>
+    <div class="container-fluid" style="padding-left:10px; padding-bottom:10px; padding-top:10px">
+        <a href="logout1.php">Logout</a>
+        <br>
+        Hello, <?php echo $user_data['user_name']; ?>
+    </div>
+
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
@@ -93,7 +96,7 @@ require_once 'startsession.php';
     <div class="col-md-2"> </div>
         <div class="text-center" class="col-md-8">
             <div class="row">
-                <h2 class="text-center">All Products</h2>
+                <h2 class="text-center" style="padding-top: 20px">All Products</h2>
                 <?php
                     while($fetch_product = mysqli_fetch_assoc($featured)):
                     // TODO: change this to all products not just featured?
@@ -118,10 +121,10 @@ require_once 'startsession.php';
             </div>
         </div>
 
-        <div class="shopping-cart">
-            <h1 class="header" style="padding-top:50px; padding-left:50px">Shopping Cart</h1>  
+        <div class="shopping-cart" style="padding-left:50px">
+            <h1 class="header" style="padding-top:50px">Shopping Cart</h1>  
             
-            <table style="padding-left:50px">
+            <table>
                 <thead>
                     <th>Image</th>
                     <th>Name</th>
@@ -130,7 +133,7 @@ require_once 'startsession.php';
                     <th>Total Price</th>
                     <th>Action</th>
                 </thead>
-                <tbody>
+                <tbody style="padding-left:50px">
                 <?php
                     $grand_total = 0;
                     $cart_query = mysqli_query($con, "SELECT * FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'"); // query database - im not sure if id will work here just yet
@@ -167,6 +170,9 @@ require_once 'startsession.php';
                 </tbody>
             </table>
         </div>
+
+        <a href="checkout.php" style="padding-left:800px; padding-bottom:50px; padding-top:150px"><button style="border: 2px solid black; border-radius: 10px; background:lightgreen; padding:15px">Proceed to Payment</button></a>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"> </script>
