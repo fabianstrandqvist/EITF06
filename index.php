@@ -1,8 +1,14 @@
 <?php 
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once 'startsession.php';
 
 	$user_data = check_login($con);
+
+    // CSRF token generation
+    $csrfToken = $_SESSION['csrf_token'];
 
     
     $con = mysqli_connect('localhost', 'root'); // connect to database
@@ -10,6 +16,18 @@ require_once 'startsession.php';
     $sql = "SELECT * FROM products WHERE featured=1"; // select all products from database
     $featured = mysqli_query($con, $sql); // query database
     // $featured = $con->query($sql); // other way to query database
+
+    if (isset($_POST['comment'])) {
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die("CSRF token validation failed.");
+        }
+        $message = $_POST['message'];
+
+        $sqlcomment = "INSERT INTO comments (uid, message) VALUES ('" . $user_data['user_id'] . "', '$message')";
+        mysqli_query($con, $sqlcomment);
+
+    }
 
 ?>
 
@@ -22,6 +40,7 @@ require_once 'startsession.php';
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel = "stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -81,6 +100,7 @@ require_once 'startsession.php';
     <!-- Home Page -->
     <h2 class="text-center">Welcome to the Web Shop!</h2>
     <div class="col-md-2"> </div>
+    
         <div class="text-center" class="col-md-8">
             <div class="row">
                 <h4 class="text-center">Top Products</h4>
@@ -91,7 +111,7 @@ require_once 'startsession.php';
                     <div class="col-md-5">
                         <!-- php to display product title, image, price -->
                         <h4> <?= $product['title']; ?> </h4> 
-                        <img src="<?= $product["image"]; ?>" alt="<?= $product['title']; ?>" class="img-fluid pb-4" style="width:250px; height:200px; object-fit:cover;"/>
+                        <img src="<?= $product["image"]; ?>" alt="<?= $product['title']; ?>" class="img-fluid pb-4"/>
                         <p class="price">$<?= $product['price']; ?> </p>
                     </div>
                 <?php endwhile; ?>
@@ -99,6 +119,29 @@ require_once 'startsession.php';
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#details-1">View All Products</button>
                 </a>
             </div>
+            <form method='POST' action=''>
+                <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
+                <input type='hidden' name='uid' value='Anonymous'>
+                <textarea name='message'></textarea><br><br>
+                <input type="submit" value="Review Our Website" name="comment" class="btn btn-success">
+            </form>
+
+            <tbody>
+                <?php
+                    
+                    $comment_query = mysqli_query($con, "SELECT * FROM `comments`");
+                    if(mysqli_num_rows($comment_query) > 0){
+                        while($fetch_comments = mysqli_fetch_assoc($comment_query)){
+                ?>
+                    <tr>
+                        <td style="width:200px"><?php echo $fetch_comments["message"]; ?></td><br>
+                    </tr>
+                    <?php
+                    };
+                };
+                    ?>
+                    </tbody>
+                
         </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"> </script>

@@ -16,7 +16,11 @@
     
 
     session_start();
-    echo session_id();
+    
+    header("Content-Security-Policy: default-src 'self' https://ajax.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css https://cdn.jsdelivr.net css/style.css log_sign.css; script-src 'self' https://ajax.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css https://cdn.jsdelivr.net css/style.css log_sign.css;");
+
+
+    
 
 	include("connection1.php");
 	include("functions1.php");
