@@ -133,7 +133,7 @@ app.post('/addTransaction', (req, res) => {
     blockchain.addBlock(newBlock);
     index++;
     console.log(blockchain);
-    // Combine responses into a single JSON object
+
     res.json({
         transactionMessage: 'Transaction added to the blockchain.',
         blockMinedMessage: 'Block mined.'
