@@ -44,9 +44,12 @@ require_once 'startsession.php';
 </head>
 <body>
 
-    <a href="logout1.php">Logout</a>
-    <br>
-    Hello, <?php echo $user_data['user_name']; ?>
+    <div class="container-fluid" style="padding-left:10px; padding-bottom:10px; padding-top:10px">
+        <a href="logout1.php">Logout</a>
+        <br>
+        Hello, <?php echo $user_data['user_name']; ?>
+    </div>
+
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
@@ -98,7 +101,7 @@ require_once 'startsession.php';
     </nav>
 
     <!-- Home Page -->
-    <h2 class="text-center">Welcome to the Web Shop!</h2>
+    <h2 class="text-center" style="padding-top: 20px">Welcome to the Web Shop!</h2>
     <div class="col-md-2"> </div>
     
         <div class="text-center" class="col-md-8">

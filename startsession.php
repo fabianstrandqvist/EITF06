@@ -21,6 +21,7 @@
 
 
     
+    // echo session_id();
 
 	include("connection1.php");
 	include("functions1.php");
