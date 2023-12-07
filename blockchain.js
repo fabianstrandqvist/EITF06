@@ -129,7 +129,7 @@ app.post('/addTransaction', (req, res) => {
     const transaction = new Transaction(sender, amount, Buffer.from(privateKey, 'hex'));
     transaction.signTransaction(privateKey);
 
-    const newBlock = new Block(index, Date.now(), JSON.stringify(transaction), transaction.txid.toString());
+    const newBlock    = new Block(index, Date.now(), JSON.stringify(transaction), transaction.txid.toString());
     blockchain.addBlock(newBlock);
     index++;
     console.log(blockchain);
@@ -142,7 +142,7 @@ app.post('/addTransaction', (req, res) => {
 
 app.all('/getTransaction', (req, res) =>{
     const {transactionId} = req.body;
-    const block = blockchain.getBlockByTransactionId(transactionId);
+    const block           = blockchain.getBlockByTransactionId(transactionId);
 
     if (block) {
         res.json({
