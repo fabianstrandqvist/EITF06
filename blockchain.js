@@ -6,11 +6,11 @@ const ec = new EC('secp256k1');
 
 class Transaction {
     constructor(sender, amount){
-        this.sender    = sender;
-        this.recipient = '3fd30542fe3f61b14bd4a4b2dc0b6fb30fa6f63ebce52dd1778aaa8c4dc02cff';
-        this.amount    = amount;
-        this.timestamp = new Date();
-        this.txid = SHA256(SHA256(this.sender + this.recipient + this.amount + this.timestamp));
+        this.sender     = sender;
+        this.recipient  = '3fd30542fe3f61b14bd4a4b2dc0b6fb30fa6f63ebce52dd1778aaa8c4dc02cff';
+        this.amount     = amount;
+        this.timestamp  = new Date();
+        this.txid       = SHA256(SHA256(this.sender + this.recipient + this.amount + this.timestamp));
         this.txidString = this.txid.toString();
     }
 
@@ -20,11 +20,11 @@ class Transaction {
     }
 
     signTransaction(signingKey) {
-        const key = ec.keyFromPrivate(signingKey, 'hex'); // Load private key
-        const hash = this.calculateHash();
-        const hashBuffer = Buffer.from(hash.toString(), 'hex');
-        const signature = key.sign(hashBuffer);
-        this.signature = signature.toDER('hex');
+        const key         = ec.keyFromPrivate(signingKey, 'hex'); // Load private key
+        const hash        = this.calculateHash();
+        const hashBuffer  = Buffer.from(hash.toString(), 'hex');
+        const signature   = key.sign(hashBuffer);
+        this.signature    = signature.toDER('hex');
     }
 
     isValid(){
