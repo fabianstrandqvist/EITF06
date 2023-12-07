@@ -26,14 +26,6 @@ class Transaction {
         const signature = key.sign(hashBuffer);
         this.signature = signature.toDER('hex');
     }
-    /** 
-    signTransaction(signingKey) {
-        const hash       = this.calculateHash();
-        const hashBuffer = Buffer.from(hash.toString(), 'hex');
-        const signature  = signingKey.sign(hashBuffer);
-        this.signature   = signature.toDER('hex');
-    }
-    */
 
     isValid(){
         if (!this.signature || this.signature === ''){
