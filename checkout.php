@@ -17,8 +17,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="checkout">
     <a href="products.php" style="padding-left:30px;">Back to Shopping Cart</a><br><br>
 
     <h1 class="header" style="padding-left:50px">Checkout</h1>  
@@ -62,7 +66,7 @@
     <div style="padding-left: 75px; padding-bottom:30px;">
             <label for="transactionId">Transaction ID:</label>
             <input type="text" id="transactionId" placeholder="Enter Transaction ID">
-            <button id="fetchButton" style="border: 2px solid black; border-radius: 10px; background: lightgreen; padding: 10px;">Fetch Transaction</button>
+            <button class="payment-button">Fetch Transaction</button>
         </div>
 
         <hr class="dashed-line">     
@@ -164,6 +168,7 @@
 
     <a href="index.php" style="padding-left:30px">Back to Home</a><br><br>
 
+    </div>
 
 </body>
 </html>

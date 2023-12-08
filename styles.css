@@ -8,7 +8,6 @@
   display: inline-block;
   padding: 4px 15px;
   font-size: 16px;
-  font-weight: bold;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -28,7 +27,6 @@
   display: inline-block;
   padding: 4px 15px;
   font-size: 16px;
-  font-weight: bold;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -42,4 +40,39 @@
 .btn-red:hover {
   background-color: #c9302c; /* Darker shade on hover */
   border-color: #ac2925; /* Darker border on hover */
+}
+
+.row {
+  margin-bottom: 20px;
+}
+
+.col-md-5 {
+  margin-bottom: 50px;
+}
+
+.shopping-cart {
+  margin-left: 75px;
+}
+
+.payment-button {
+  border: 2px solid white; 
+  border-radius: 10px; 
+  background:lightgreen; 
+  padding:15px
+}
+
+.payment{
+  margin-left: 700px;
+  padding-top: 50px;
+  padding-bottom: 100px;
+}
+
+.text-center{
+  padding-top: 10px;
+}
+
+.checkout{
+  margin-left: 25px;
+  padding-top: 25px;
+  padding-bottom: 100px;
 }

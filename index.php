@@ -39,7 +39,6 @@ require_once 'startsession.php';
     <title>Home Page</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel = "stylesheet" href="css/style.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -92,10 +91,10 @@ require_once 'startsession.php';
         </ul>
 
         <!-- Search Bar -->
-        <form class="d-flex" role="search">
+        <!-- <form class="d-flex" role="search">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        </form> -->
         </div>
     </div>
     </nav>
@@ -122,6 +121,7 @@ require_once 'startsession.php';
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#details-1">View All Products</button>
                 </a>
             </div>
+            <hr class="dashed-line">     
             <form method='POST' action=''>
                 <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                 <input type='hidden' name='uid' value='Anonymous'>

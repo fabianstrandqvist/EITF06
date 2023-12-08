@@ -80,7 +80,6 @@ $csrfToken = $_SESSION['csrf_token'];
     <title>Products</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel = "stylesheet" href="css/style.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -106,10 +105,10 @@ $csrfToken = $_SESSION['csrf_token'];
         </ul>
 
         <!-- Search Bar -->
-        <form class="d-flex" role="search">
+        <!-- <form class="d-flex" role="search">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        </form> -->
         </div>
     </div>
     </nav>
@@ -117,12 +116,12 @@ $csrfToken = $_SESSION['csrf_token'];
     <div class="col-md-2"> </div>
         <div class="text-center" class="col-md-8">
             <div class="row">
-                <h2 class="text-center" style="padding-top: 20px">All Products</h2>
+                <h2 class="text-center">All Products</h2>
                 <?php
                     while($fetch_product = mysqli_fetch_assoc($featured)):
                     // TODO: change this to all products not just featured?
                 ?>
-                    <form method="post" class="col-md-5" action="">
+                    <form method="post" class="col-md-5" class="text-center" action="">
                         <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                         <!-- php to display fetch_product title, image, price -->
                         <h4> <?= $fetch_product['title']; ?> </h4> 
@@ -137,12 +136,10 @@ $csrfToken = $_SESSION['csrf_token'];
                         <input type="submit" value="Add To Cart" name="add_to_cart" class="btn-green">
                     </form>
                     
-                    <!-- Form for adding item to cart - DELETED -->
-                    
                 <?php endwhile; ?>
             </div>
         </div>
-
+        <hr class="dashed-line">     
         <div class="shopping-cart" style="padding-left:50px">
             <h1 class="header" style="padding-top:50px">Shopping Cart</h1>  
             
@@ -194,7 +191,7 @@ $csrfToken = $_SESSION['csrf_token'];
             </table>
         </div>
 
-        <a href="checkout.php" style="padding-left:800px; padding-bottom:50px; padding-top:150px"><button style="border: 2px solid black; border-radius: 10px; background:lightgreen; padding:15px">Proceed to Payment</button></a>
+        <a href="checkout.php" class="payment"><button class="payment-button">Proceed to Payment</button></a>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
