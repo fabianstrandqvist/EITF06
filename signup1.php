@@ -53,19 +53,20 @@ $csrfToken = $_SESSION['csrf_token'];
 				$user_id = random_num(20);
 
 				// OPTION 1: QUOTING ARGUMENTS
-				$query = "insert into users (user_id,user_name,password,address) values ('" . $user_id . "','" . $xss_sanitized_user_name . "','" . $hashed_password . "', '" . $sanitized_address . "')";
-				mysqli_query($con, $query);
+				//$query = "insert into users (user_id,user_name,password,address) values ('" . $user_id . "','" . $xss_sanitized_user_name . "','" . $hashed_password . "', '" . $sanitized_address . "')";
+				//mysqli_query($con, $query);
 
-				// OPTION 2: PREPARED STATEMENTS
-				// use prepared statement to avoid SQL injection
-				// $query = "insert into users (user_id,user_name,password,address) values (?, ?, ?, ?)";
-				// $stmt = $con->prepare($query);
+				//OPTION 2: PREPARED STATEMENTS
+				//use prepared statement to avoid SQL injection
+				$query = "insert into users (user_id,user_name,password,address) values (?, ?, ?, ?)";
+				$stmt = $con->prepare($query);
 
 				// bind parameters
-				// $query->bind_param($stmt, "ssss", $user_id, $xss_sanitized_user_name, $hashed_password, $sanitized_address);
+				$stmt->bind_param("ssss", $user_id, $xss_sanitized_user_name, $hashed_password, $sanitized_address);
 
 				// execute query
-				// $stmt->execute();
+				$stmt->execute();
+				$stmt->close();
 
 				header("Location: login1.php");
 				die;
