@@ -23,7 +23,7 @@
     
     // echo session_id();
 
-	include("connection1.php");
+	//include("connection1.php");
 	include("functions1.php");
 
     if (!isset($_SESSION['ServGen'])) {

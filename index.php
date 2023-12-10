@@ -5,8 +5,6 @@ ini_set('display_errors', 1);
 
 require_once 'startsession.php';
 
-	$user_data = check_login($con);
-
     // CSRF token generation
     $csrfToken = $_SESSION['csrf_token'];
 
@@ -16,6 +14,8 @@ require_once 'startsession.php';
     $sql = "SELECT * FROM products WHERE featured=1"; // select all products from database
     $featured = mysqli_query($con, $sql); // query database
     // $featured = $con->query($sql); // other way to query database
+
+    $user_data = check_login($con);
 
     if (isset($_POST['comment'])) {
         // Verify CSRF token

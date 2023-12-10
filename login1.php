@@ -2,6 +2,16 @@
 
 require_once 'startsession.php';
 
+$dbhost = "localhost";
+$dbuser = "root";
+$dbpass = "";
+$dbname = "shop";
+
+if(!$con = mysqli_connect($dbhost,$dbuser,$dbpass,$dbname))
+{
+    die("failed to connect");
+}
+
 // Command to test for invalid tokens: curl -X POST -d "user_name=test&password=test&csrf_token=invalid_token" localhost/EITF06/signup1.php
 // CSRF token generation
 $csrfToken = $_SESSION['csrf_token'];
@@ -57,6 +67,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     <title>Login</title>
 </head>
 <body>
+
     <div id="box">
         <form method="post">
             <div style="font-size: 20px;margin: 10px;color: white;">Login</div>

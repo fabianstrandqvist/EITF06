@@ -1,17 +1,20 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 require_once 'startsession.php';
 
 // CSRF token generation
 $csrfToken = $_SESSION['csrf_token'];
 
-    $user_data = check_login($con);
+    
 
     $con = mysqli_connect('localhost', 'root'); // connect to database
     mysqli_select_db($con, 'shop'); // select database
     $sql = "SELECT * FROM products"; // select all products from database
     $featured = mysqli_query($con, $sql); // query database
     // $featured = $con->query($sql); // other way to query database
+    $user_data = check_login($con);
 
     if (isset($_POST['add_to_cart'])) {
         // Verify CSRF token

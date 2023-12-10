@@ -6,6 +6,16 @@
 
 	require_once 'startsession.php';
 
+	$dbhost = "localhost";
+$dbuser = "root";
+$dbpass = "";
+$dbname = "shop";
+
+if(!$con = mysqli_connect($dbhost,$dbuser,$dbpass,$dbname))
+{
+    die("failed to connect");
+}
+
 // CSRF token generation
 $csrfToken = $_SESSION['csrf_token'];
 
