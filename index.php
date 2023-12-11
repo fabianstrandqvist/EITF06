@@ -23,9 +23,17 @@ require_once 'startsession.php';
         }
         $message = $_POST['message'];
 
-        $sqlcomment = "INSERT INTO comments (uid, message) VALUES ('" . $user_data['user_id'] . "', '$message')";
-        mysqli_query($con, $sqlcomment);
+        $sanitizedMessage = mysqli_real_escape_string($con, $message);
 
+        $query = "INSERT INTO comments (uid, message) values (?, ?)";
+        $stmt = $con->prepare($query);
+
+        // bind parameters
+        $stmt->bind_param("ss", $user_data['user_id'], $sanitizedMessage);
+
+        // execute query
+        $stmt->execute();
+        $stmt->close();
     }
 
 ?>
