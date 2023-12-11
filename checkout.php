@@ -1,5 +1,4 @@
 <?php
-
     require_once 'startsession.php';
 
     $user_data = check_login($con);
@@ -22,11 +21,11 @@
 </head>
 <body>
     <div class="checkout">
-    <a href="products.php" style="padding-left:30px;">Back to Shopping Cart</a><br><br>
+    <a href="products.php">Back to Shopping Cart</a><br><br>
 
-    <h1 class="header" style="padding-left:50px">Checkout</h1>  
+    <h1 class="header">Checkout</h1>  
 
-    <table style="padding-left:50px">
+    <table>
         <thead>
             <th>Image</th>
             <th>Name</th>
@@ -68,51 +67,6 @@
     </div>
 
     <hr class="dashed-line">     
-
-    <div id="receiptContainer" style="padding-left: 50px; padding-top: 20px;">
-        <h2 class="header" style="color: green">Receipt:</h2>
-        <div id="receiptContent"></div>
-    </div>
-
-    <button id="completePaymentBtn" class="finish-payment-button">Complete Payment</button>
-
-    <!-- TODO: hide this table until the user clicks the button "Complete Payment" -->
-    <div class="paymentTable" id="paymentTableID">
-        <table>
-            <thead>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-            </thead>
-            <tbody>
-            <?php
-                $grand_total = 0;
-                $cart_query = mysqli_query($con, "SELECT * FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'"); // query database - im not sure if id will work here just yet
-                if(mysqli_num_rows($cart_query) > 0){
-                    while($fetch_cart = mysqli_fetch_assoc($cart_query)){
-            ?>
-                <tr>
-                    <td style="width:170px"><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
-                    <td style="width:125px"><?php echo $fetch_cart["name"]; ?></td>
-                    <td style="width:100px">$<?php echo number_format($fetch_cart['price']); ?>/-</td>
-                    <td style="width:50px"><?php echo $fetch_cart["quantity"]; ?></td>
-                    <td style="width:150px; padding-left:50px">$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
-                </tr>
-                
-            <?php
-                $grand_total += intval(str_replace(',', '', $sub_total));
-                    };
-                };
-            ?>
-            <tr style="height:75px">
-                <td colspan="4">Grand Total :</td>
-                <td>$<?php echo number_format($grand_total);?>/-</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
 
     <script>
         async function fetchTransaction(transactionId){
@@ -167,7 +121,9 @@
 
     </script>
 
-    <a href="index.php" style="padding-left:30px">Back to Home</a><br><br>
+    <a href="receipt.php">Complete Transaction</a><br><br>
+
+    <a href="index.php">Back to Home</a><br><br>
 
     </div>
 

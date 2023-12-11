@@ -104,11 +104,6 @@ $csrfToken = $_SESSION['csrf_token'];
             </li>
         </ul>
 
-        <!-- Search Bar -->
-        <!-- <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form> -->
         </div>
     </div>
     </nav>
@@ -119,7 +114,6 @@ $csrfToken = $_SESSION['csrf_token'];
                 <h2 class="text-center">All Products</h2>
                 <?php
                     while($fetch_product = mysqli_fetch_assoc($featured)):
-                    // TODO: change this to all products not just featured?
                 ?>
                     <form method="post" class="col-md-5" class="text-center" action="">
                         <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">

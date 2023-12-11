@@ -76,3 +76,12 @@
   padding-top: 25px;
   padding-bottom: 100px;
 }
+
+.hiddenContent {
+  display: none;
+}
+
+.visibleContent {
+  display: "";
+}
+

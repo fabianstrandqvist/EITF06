@@ -62,7 +62,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 <body>
     <div id="box">
         <form method="post">
-            <div style="font-size: 20px;margin: 10px;color: white;">Login</div>
+            <div class="loginTitle">Login</div>
 
             <label for="fname">Username:</label>
             <input type="text" name="user_name" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>
