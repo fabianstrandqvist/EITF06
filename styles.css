@@ -77,11 +77,8 @@
   padding-bottom: 100px;
 }
 
-.hiddenContent {
-  display: none;
+.receipt{
+  margin-left: 25px;
+  padding-top: 25px;
+  padding-bottom: 100px;
 }
-
-.visibleContent {
-  display: "";
-}
-

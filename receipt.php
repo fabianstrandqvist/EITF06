@@ -32,18 +32,11 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <a href="index.php">Back to Home</a><br><br>
+    
+    <div class="receipt">
 
-    <div id="receiptContainer" style="padding-left: 50px; padding-top: 20px;">
-        <h2 class="header" style="color: green">Receipt:</h2>
-        <div id="receiptContent"></div>
-    </div>
+        <h1 class="header">Receipt</h1>  
 
-    <!-- TODO: add actual transaction ID here -->
-    <h3 class="header" style="padding-left:50px">Transaction ID: ??</h3>  
-
-    <!-- TODO: hide this table until the user clicks the button "Complete Payment" -->
-    <div class="paymentTable" id="paymentTableID">
         <table>
             <thead>
                 <th>Image</th>
@@ -78,13 +71,13 @@
             </tr>
             </tbody>
         </table>
-    </div>
 
-    <!-- deletes cart after transaction -->
-    <a href="products.php?delete_all&csrf_token=<?php echo $csrfToken; ?>" class="btn-red">Finish Transaction</a>
+        <hr class="dashed-line">    
         
+        <!-- deletes cart after transaction -->
+        <a href="products.php?delete_all&csrf_token=<?php echo $csrfToken; ?>" class="btn-red">Finish Transaction</a>
 
-    <h2 class="header" style="padding-top:50px; padding-left:50px; color:red">**Add Payment Info Here?**</h2>  
+    </div>
 
 </body>
 </html>

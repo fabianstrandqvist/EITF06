@@ -83,7 +83,7 @@ $csrfToken = $_SESSION['csrf_token'];
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container-fluid" style="padding-left:10px; padding-bottom:10px; padding-top:10px">
+    <div class="container-fluid" >
         <a href="logout1.php">Logout</a>
         <br>
         Hello, <?php echo $user_data['user_name']; ?>
@@ -134,8 +134,8 @@ $csrfToken = $_SESSION['csrf_token'];
             </div>
         </div>
         <hr class="dashed-line">     
-        <div class="shopping-cart" style="padding-left:50px">
-            <h1 class="header" style="padding-top:50px">Shopping Cart</h1>  
+        <div class="shopping-cart">
+            <h1 class="header">Shopping Cart</h1>  
             
             <table>
                 <thead>
@@ -146,7 +146,7 @@ $csrfToken = $_SESSION['csrf_token'];
                     <th>Total Price</th>
                     <th>Action</th>
                 </thead>
-                <tbody style="padding-left:50px">
+                <tbody>
                 <?php
                     $grand_total = 0;
                     $cart_query = mysqli_query($con, "SELECT * FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'"); // query database - im not sure if id will work here just yet
@@ -154,9 +154,9 @@ $csrfToken = $_SESSION['csrf_token'];
                         while($fetch_cart = mysqli_fetch_assoc($cart_query)){
                 ?>
                     <tr>
-                        <td style="width:170px"><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
-                        <td style="width:125px"><?php echo $fetch_cart["name"]; ?></td>
-                        <td style="width:100px">$<?php echo number_format($fetch_cart['price']); ?>/-</td>
+                        <td><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
+                        <td><?php echo $fetch_cart["name"]; ?></td>
+                        <td>$<?php echo number_format($fetch_cart['price']); ?>/-</td>
                         <td>
                             <form action="" method="post">
                                 <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
@@ -165,7 +165,7 @@ $csrfToken = $_SESSION['csrf_token'];
                                 <input type="submit" name="update_cart" value="Update" class="btn-green">
                             </form>
                         </td>
-                        <td style="width:150px; padding-left:10px">$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
+                        <td>$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
                         <td>
                             <a href="products.php?remove=<?php echo $fetch_cart['id']; ?>&csrf_token=<?php echo $csrfToken; ?>" class="btn-red" onclick="return confirm('Remove Item From Cart?');">Remove</a>
                         </td>
@@ -176,7 +176,7 @@ $csrfToken = $_SESSION['csrf_token'];
                         };
                     };
                 ?>
-                <tr style="height:75px">
+                <tr>
                     <td colspan="4">Grand Total :</td>
                     <td>$<?php echo number_format($grand_total);?>/-</td>
                     <td><a href="products.php?delete_all&csrf_token=<?php echo $csrfToken; ?>" onclick="return confirm('Delete All From Cart?');" class="btn-red">Delete All</a></td>
@@ -190,7 +190,7 @@ $csrfToken = $_SESSION['csrf_token'];
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"> </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> <link rel="stylesheet" href="styles.css">
 
 </body>
 </html>

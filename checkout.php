@@ -41,11 +41,11 @@
                 while($fetch_cart = mysqli_fetch_assoc($cart_query)){
         ?>
             <tr>
-                <td style="width:170px"><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
-                <td style="width:125px"><?php echo $fetch_cart["name"]; ?></td>
-                <td style="width:100px">$<?php echo number_format($fetch_cart['price']); ?>/-</td>
-                <td style="width:50px"><?php echo $fetch_cart["quantity"]; ?></td>
-                <td style="width:150px; padding-left:50px">$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
+                <td><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
+                <td><?php echo $fetch_cart["name"]; ?></td>
+                <td>$<?php echo number_format($fetch_cart['price']); ?>/-</td>
+                <td><?php echo $fetch_cart["quantity"]; ?></td>
+                <td>$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
             </tr>
             
         <?php
@@ -53,75 +53,28 @@
                 };
             };
         ?>
-        <tr style="height:75px">
+        <tr>
             <td colspan="4">Grand Total :</td>
             <td>$<?php echo number_format($grand_total);?>/-</td>
         </tr>
         </tbody>
     </table>
 
-    <div style="padding-left: 75px; padding-bottom:30px;">
-            <label for="transactionId">Transaction ID:</label>
-            <input type="text" id="transactionId" placeholder="Enter Transaction ID">
-            <button class="payment-button">Fetch Transaction</button>
+    <div>
+        <label for="transactionId">Transaction ID:</label>
+        <input type="text" id="transactionId" placeholder="Enter Transaction ID">
+        <button id="fetchButton">Fetch Transaction</button>
     </div>
 
     <hr class="dashed-line">     
 
-    <script>
-        async function fetchTransaction(transactionId){
-            try{
-                const response = await fetch(`http://localhost:3000/getTransaction`, {
-                     method: 'POST',
-                     headers: {
-                     'Content-Type': 'application/json',
-                    },
-                     body: JSON.stringify({ transactionId }),
-                });
-                const data     = await response.json();
-                
-                console.log(data);
-                displayReceipt(data);
-                }   catch (error){
-                console.error('Error fetching transaction:', error);
-            }
-        }
-        function displayReceipt(data) {
-        const receiptContainer = document.getElementById('receiptContainer');
-        const receiptContent = document.getElementById('receiptContent');
+    <div id="receiptContainer">
+        <!-- <h2 class="header">Receipt:</h2> -->
+        <div id="receiptContent"></div>
+    </div>
 
-        // Clear previous content
-        receiptContent.innerHTML = '';
-
-        if (data.error) {
-            // Display error message
-            receiptContent.innerText = `Error: ${data.error}`;
-        } else if (data.transaction) {
-            // Display transaction details
-            const transaction = data.transaction;
-            const transactionHTML = `
-                <p>Sender: ${transaction.sender}</p>
-                <p>Recipient: ${transaction.recipient}</p>
-                <p>Amount: ${transaction.amount}</p>
-                <p>Timestamp: ${transaction.timestamp}</p>
-                <p>Transaction ID: ${transaction.txidString}</p>`;
-            receiptContent.innerHTML = transactionHTML;
-        }
-        }   
-
-        document.getElementById('fetchButton').addEventListener('click', function(){
-            const transactionId = document.getElementById('transactionId').value;
-
-            if(transactionId.trim() !== ''){
-                fetchTransaction(transactionId);
-            } else {
-                alert('Please enter a valid Transaction ID.');
-            }
-        });
-
-    </script>
-
-    <a href="receipt.php">Complete Transaction</a><br><br>
+    <!-- Javascript code for retrieving transaction details -->
+    <script src="transaction.js"></script>
 
     <a href="index.php">Back to Home</a><br><br>
 
