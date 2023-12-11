@@ -78,21 +78,18 @@ $csrfToken = $_SESSION['csrf_token'];
 				}
 				//newcode
 
-				// OPTION 1: QUOTING ARGUMENTS
-				
-
-				// OPTION 2: PREPARED STATEMENTS
-				// use prepared statement to avoid SQL injection
-				// $query = "insert into users (user_id,user_name,password,address) values (?, ?, ?, ?)";
-				// $stmt = $con->prepare($query);
+				//use prepared statement to avoid SQL injection
+				$query = "insert into users (user_id,user_name,password,address) values (?, ?, ?, ?)";
+				$stmt = $con->prepare($query);
 
 				// bind parameters
-				// $query->bind_param($stmt, "ssss", $user_id, $xss_sanitized_user_name, $hashed_password, $sanitized_address);
+				$stmt->bind_param("ssss", $user_id, $xss_sanitized_user_name, $hashed_password, $sanitized_address);
 
 				// execute query
 				// $stmt->execute();
 
-				
+				header("Location: login1.php");
+				die;
 			}
 		}
 		else
@@ -118,7 +115,7 @@ $csrfToken = $_SESSION['csrf_token'];
 	<div id="box">
 		
 		<form method="post">
-			<div style="font-size: 20px;margin: 10px;color: white;">Signup</div>
+			<div class="loginTitle">Signup</div>
 
 			<label for="fname">Username:</label>
 			<input id="text" type="text" name="user_name"  pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>

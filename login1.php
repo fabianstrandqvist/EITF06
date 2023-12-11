@@ -51,10 +51,13 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     if(!empty($sanitized_user_name) && !empty($sanitized_password) && !is_numeric($sanitized_user_name))
     {
 
-        //read from database
-        $query = "select * from users where user_name = '$sanitized_user_name' limit 1";
+        // Read from database using prepared statement and bound parameter
+        $query = "SELECT * FROM users WHERE user_name = ? LIMIT 1";
 
-        $result = mysqli_query($con, $query);
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("s", $sanitized_user_name);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if($result)
         {
@@ -90,7 +93,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 
     <div id="box">
         <form method="post">
-            <div style="font-size: 20px;margin: 10px;color: white;">Login</div>
+            <div class="loginTitle">Login</div>
 
             <label for="fname">Username:</label>
             <input type="text" name="user_name" pattern="^[a-zA-Z0-9!@#$%^&*()_+]+$"><br><br>

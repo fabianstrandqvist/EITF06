@@ -83,11 +83,10 @@ $csrfToken = $_SESSION['csrf_token'];
     <title>Products</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel = "stylesheet" href="css/style.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container-fluid" style="padding-left:10px; padding-bottom:10px; padding-top:10px">
+    <div class="container-fluid" >
         <a href="logout1.php">Logout</a>
         <br>
         Hello, <?php echo $user_data['user_name']; ?>
@@ -108,11 +107,6 @@ $csrfToken = $_SESSION['csrf_token'];
             </li>
         </ul>
 
-        <!-- Search Bar -->
-        <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
         </div>
     </div>
     </nav>
@@ -120,12 +114,11 @@ $csrfToken = $_SESSION['csrf_token'];
     <div class="col-md-2"> </div>
         <div class="text-center" class="col-md-8">
             <div class="row">
-                <h2 class="text-center" style="padding-top: 20px">All Products</h2>
+                <h2 class="text-center">All Products</h2>
                 <?php
                     while($fetch_product = mysqli_fetch_assoc($featured)):
-                    // TODO: change this to all products not just featured?
                 ?>
-                    <form method="post" class="col-md-5" action="">
+                    <form method="post" class="col-md-5" class="text-center" action="">
                         <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                         <!-- php to display fetch_product title, image, price -->
                         <h4> <?= $fetch_product['title']; ?> </h4> 
@@ -140,14 +133,12 @@ $csrfToken = $_SESSION['csrf_token'];
                         <input type="submit" value="Add To Cart" name="add_to_cart" class="btn-green">
                     </form>
                     
-                    <!-- Form for adding item to cart - DELETED -->
-                    
                 <?php endwhile; ?>
             </div>
         </div>
-
-        <div class="shopping-cart" style="padding-left:50px">
-            <h1 class="header" style="padding-top:50px">Shopping Cart</h1>  
+        <hr class="dashed-line">     
+        <div class="shopping-cart">
+            <h1 class="header">Shopping Cart</h1>  
             
             <table>
                 <thead>
@@ -158,17 +149,17 @@ $csrfToken = $_SESSION['csrf_token'];
                     <th>Total Price</th>
                     <th>Action</th>
                 </thead>
-                <tbody style="padding-left:50px">
+                <tbody>
                 <?php
                     $grand_total = 0;
-                    $cart_query = mysqli_query($con, "SELECT * FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'"); // query database - im not sure if id will work here just yet
+                    $cart_query = mysqli_query($con, "SELECT * FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'"); 
                     if(mysqli_num_rows($cart_query) > 0){
                         while($fetch_cart = mysqli_fetch_assoc($cart_query)){
                 ?>
                     <tr>
-                        <td style="width:170px"><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
-                        <td style="width:125px"><?php echo $fetch_cart["name"]; ?></td>
-                        <td style="width:100px">$<?php echo number_format($fetch_cart['price']); ?>/-</td>
+                        <td><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
+                        <td><?php echo $fetch_cart["name"]; ?></td>
+                        <td>$<?php echo number_format($fetch_cart['price']); ?>/-</td>
                         <td>
                             <form action="" method="post">
                                 <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
@@ -177,7 +168,7 @@ $csrfToken = $_SESSION['csrf_token'];
                                 <input type="submit" name="update_cart" value="Update" class="btn-green">
                             </form>
                         </td>
-                        <td style="width:150px; padding-left:10px">$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
+                        <td>$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
                         <td>
                             <a href="products.php?remove=<?php echo $fetch_cart['id']; ?>&csrf_token=<?php echo $csrfToken; ?>" class="btn-red" onclick="return confirm('Remove Item From Cart?');">Remove</a>
                         </td>
@@ -188,7 +179,7 @@ $csrfToken = $_SESSION['csrf_token'];
                         };
                     };
                 ?>
-                <tr style="height:75px">
+                <tr>
                     <td colspan="4">Grand Total :</td>
                     <td>$<?php echo number_format($grand_total);?>/-</td>
                     <td><a href="products.php?delete_all&csrf_token=<?php echo $csrfToken; ?>" onclick="return confirm('Delete All From Cart?');" class="btn-red">Delete All</a></td>
@@ -197,12 +188,12 @@ $csrfToken = $_SESSION['csrf_token'];
             </table>
         </div>
 
-        <a href="checkout.php" style="padding-left:800px; padding-bottom:50px; padding-top:150px"><button style="border: 2px solid black; border-radius: 10px; background:lightgreen; padding:15px">Proceed to Payment</button></a>
+        <a href="checkout.php" class="payment"><button class="payment-button">Proceed to Payment</button></a>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"> </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> <link rel="stylesheet" href="styles.css">
 
 </body>
 </html>

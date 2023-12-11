@@ -25,9 +25,17 @@ require_once 'startsession.php';
         $message = $_POST['message'];
         $xsssafemessage = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
 
-        $sqlcomment = "INSERT INTO comments (uid, message) VALUES ('" . $user_data['user_id'] . "', '$xsssafemessage')";
-        mysqli_query($con, $sqlcomment);
+        $sanitizedMessage = mysqli_real_escape_string($con, $message);
 
+        $query = "INSERT INTO comments (uid, message) values (?, ?)";
+        $stmt = $con->prepare($query);
+
+        // bind parameters
+        $stmt->bind_param("ss", $user_data['user_id'], $sanitizedMessage);
+
+        // execute query
+        $stmt->execute();
+        $stmt->close();
     }
 
 ?>
@@ -40,7 +48,6 @@ require_once 'startsession.php';
     <title>Home Page</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel = "stylesheet" href="css/style.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -65,38 +72,11 @@ require_once 'startsession.php';
             <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>
 
-            <!-- <li class="nav-item">
-            <a class="nav-link" href="#signupform">Sign Up</a>
-            </li>
-
-            <li class="nav-item">
-            <a class="nav-link" href="#">Login In</a>
-            </li> -->
-
-            <!-- TODO: implement this button to direct to products.php -->
             <li class="nav-item">
             <a class="nav-link" href="products.php">Shop</a>
             </li>
-
-            <!-- Optional Dropdown -->
-            <!-- <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown
-            </a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-            </li> -->
         </ul>
-
-        <!-- Search Bar -->
-        <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+    
         </div>
     </div>
     </nav>
@@ -123,6 +103,7 @@ require_once 'startsession.php';
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#details-1">View All Products</button>
                 </a>
             </div>
+            <hr class="dashed-line">     
             <form method='POST' action=''>
                 <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                 <input type='hidden' name='uid' value='Anonymous'>
@@ -149,7 +130,7 @@ require_once 'startsession.php';
         </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"> </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> <link rel="stylesheet" href="styles..css">
 
 </body>
 </html>
