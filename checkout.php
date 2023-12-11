@@ -1,13 +1,16 @@
 <?php
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 
     require_once 'startsession.php';
 
-    $user_data = check_login($con);
+   
 
     $con = mysqli_connect('localhost', 'root'); // connect to database
     mysqli_select_db($con, 'shop'); // select database
     $sql = "SELECT * FROM products"; // select all products from database
     $featured = mysqli_query($con, $sql); // query database
+    $user_data = check_login($con);
     
 ?>
 

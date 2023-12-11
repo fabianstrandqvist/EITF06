@@ -37,7 +37,7 @@ $csrfToken = $_SESSION['csrf_token'];
             mysqli_query($con, "UPDATE `cart`SET quantity = '$new_quantity' WHERE name = '$product_name'");
         } else {
             mysqli_query($con, "INSERT INTO `cart` (user_id, name, price, image, quantity) VALUES 
-            ('" . $user_data['user_id'] . "', '$product_name', '$product_price', '$product_image', '$product_quantity')");
+            ('" . $user_data['user_id'] . "', '$product_name', '$product_price', '$product_image', '$xsssafeproduct_quantity')");
             $message = 'Product added to cart successfully';
         }
     }

@@ -17,8 +17,7 @@
 
     session_start();
     
-    header("Content-Security-Policy: default-src 'self' https://ajax.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css https://cdn.jsdelivr.net css/style.css log_sign.css; script-src 'self' https://ajax.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css https://cdn.jsdelivr.net css/style.css log_sign.css;");
-
+    header("Content-Security-Policy: default-src 'self' https://ajax.googleapis.com/ https://cdnjs.cloudflare.com/ https://cdn.jsdelivr.net/ https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css https://cdn.jsdelivr.net/ styles.css log_sign.css; script-src 'self' https://ajax.googleapis.com/ https://cdnjs.cloudflare.com/ https://cdn.jsdelivr.net/ https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css https://cdn.jsdelivr.net/ styles.css log_sign.css; connect-src 'self' http://localhost:3000;");
 
     
     // echo session_id();

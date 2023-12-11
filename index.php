@@ -23,8 +23,9 @@ require_once 'startsession.php';
             die("CSRF token validation failed.");
         }
         $message = $_POST['message'];
+        $xsssafemessage = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
 
-        $sqlcomment = "INSERT INTO comments (uid, message) VALUES ('" . $user_data['user_id'] . "', '$message')";
+        $sqlcomment = "INSERT INTO comments (uid, message) VALUES ('" . $user_data['user_id'] . "', '$xsssafemessage')";
         mysqli_query($con, $sqlcomment);
 
     }

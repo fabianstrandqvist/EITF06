@@ -12,16 +12,35 @@ if(!$con = mysqli_connect($dbhost,$dbuser,$dbpass,$dbname))
     die("failed to connect");
 }
 
+
+
 // Command to test for invalid tokens: curl -X POST -d "user_name=test&password=test&csrf_token=invalid_token" localhost/EITF06/signup1.php
 // CSRF token generation
 $csrfToken = $_SESSION['csrf_token'];
+$maxAttempts = 3; // Set the maximum number of failed attempts
+$lockoutDuration = 20; // Set the lockout duration in seconds (e.g., 5 minutes)
 
 if($_SERVER['REQUEST_METHOD'] == "POST")
 {
+
+    if (!isset($_SESSION['failed_login_attempts'])) {
+        $_SESSION['failed_login_attempts'] = 0;
+    }
+
+    if ($_SESSION['failed_login_attempts'] >= $maxAttempts) {
+        $_SESSION['lockout_time'] = time() + $lockoutDuration;
+    }
+
+    if(isset($_SESSION['lockout_time']) && $_SESSION['lockout_time'] > time()){
+        $_SESSION['failed_login_attempts'] = 0;
+        die("Account is temporarily locked for 20s. Please try again later.");
+    }
+
     // Verify CSRF token
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die("CSRF token validation failed.");
     }
+ 
     //something was posted
     $user_name = $_POST['user_name'];
     $password = $_POST['password'];
@@ -52,6 +71,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
             }
         }
 
+        $_SESSION['failed_login_attempts']++;
         echo "Wrong username or password";
     }else
     {

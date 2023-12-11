@@ -62,9 +62,24 @@ $csrfToken = $_SESSION['csrf_token'];
 				//save to database
 				$user_id = random_num(20);
 
+				// Check if the username already exists in the database
+				$check_username_query = mysqli_query($con, "SELECT * FROM `users` WHERE `user_name` = '$xss_sanitized_user_name'");
+
+				if (mysqli_num_rows($check_username_query) > 0) {
+					// Username is already taken
+					echo "username is taken";
+				} else {
+					// Username is available
+					echo "Username is available. You can proceed with registration.";
+					$query = "insert into users (user_id,user_name,password,address) values ('" . $user_id . "','" . $xss_sanitized_user_name . "','" . $hashed_password . "', '" . $sanitized_address . "')";
+					mysqli_query($con, $query);
+					header("Location: login1.php");
+					die;
+				}
+				//newcode
+
 				// OPTION 1: QUOTING ARGUMENTS
-				$query = "insert into users (user_id,user_name,password,address) values ('" . $user_id . "','" . $xss_sanitized_user_name . "','" . $hashed_password . "', '" . $sanitized_address . "')";
-				mysqli_query($con, $query);
+				
 
 				// OPTION 2: PREPARED STATEMENTS
 				// use prepared statement to avoid SQL injection
@@ -77,8 +92,7 @@ $csrfToken = $_SESSION['csrf_token'];
 				// execute query
 				// $stmt->execute();
 
-				header("Location: login1.php");
-				die;
+				
 			}
 		}
 		else
