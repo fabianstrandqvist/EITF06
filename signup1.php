@@ -88,8 +88,7 @@ $csrfToken = $_SESSION['csrf_token'];
 				// execute query
 				// $stmt->execute();
 
-				header("Location: login1.php");
-				die;
+				
 			}
 		}
 		else
