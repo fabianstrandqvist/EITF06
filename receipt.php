@@ -19,6 +19,8 @@
         mysqli_query($con, "DELETE FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'");
         header('location:index.php');
     }
+
+    $transactionId = isset($_GET['transactionId']) ? $_GET['transactionId'] : '';
 ?>
 
 <!DOCTYPE html>
@@ -53,11 +55,11 @@
                     while($fetch_cart = mysqli_fetch_assoc($cart_query)){
             ?>
                 <tr>
-                    <td style="width:170px"><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
-                    <td style="width:125px"><?php echo $fetch_cart["name"]; ?></td>
-                    <td style="width:100px">$<?php echo number_format($fetch_cart['price']); ?>/-</td>
-                    <td style="width:50px"><?php echo $fetch_cart["quantity"]; ?></td>
-                    <td style="width:150px; padding-left:50px">$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
+                    <td><img src="<?php echo $fetch_cart["image"]; ?>" height="100" alt=""></td>
+                    <td><?php echo $fetch_cart["name"]; ?></td>
+                    <td>$<?php echo number_format($fetch_cart['price']); ?>/-</td>
+                    <td><?php echo $fetch_cart["quantity"]; ?></td>
+                    <td>$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
                 </tr>
                 
             <?php
@@ -65,7 +67,7 @@
                     };
                 };
             ?>
-            <tr style="height:75px">
+            <tr>
                 <td colspan="4">Grand Total :</td>
                 <td>$<?php echo number_format($grand_total);?>/-</td>
             </tr>
@@ -73,7 +75,16 @@
         </table>
 
         <hr class="dashed-line">    
-        
+
+        <h2> Transaction Details: </h2>
+        <div id="receiptContainer">
+            <div id="receiptContent"></div>
+        </div>
+
+        <div id="transactionId" data-transaction-id="<?php echo $transactionId; ?>"></div>
+
+        <script src="receipt.js"></script>
+
         <!-- deletes cart after transaction -->
         <a href="products.php?delete_all&csrf_token=<?php echo $csrfToken; ?>" class="btn-red">Finish Transaction</a>
 

@@ -68,11 +68,6 @@
 
     <hr class="dashed-line">     
 
-    <div id="receiptContainer">
-        <!-- <h2 class="header">Receipt:</h2> -->
-        <div id="receiptContent"></div>
-    </div>
-
     <!-- Javascript code for retrieving transaction details -->
     <script src="transaction.js"></script>
 

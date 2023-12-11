@@ -149,7 +149,7 @@ $csrfToken = $_SESSION['csrf_token'];
                 <tbody>
                 <?php
                     $grand_total = 0;
-                    $cart_query = mysqli_query($con, "SELECT * FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'"); // query database - im not sure if id will work here just yet
+                    $cart_query = mysqli_query($con, "SELECT * FROM `cart` WHERE user_id = '" . $user_data['user_id'] . "'"); 
                     if(mysqli_num_rows($cart_query) > 0){
                         while($fetch_cart = mysqli_fetch_assoc($cart_query)){
                 ?>
