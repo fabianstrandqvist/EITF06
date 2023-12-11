@@ -8,7 +8,6 @@
     mysqli_select_db($con, 'shop'); // select database
     $sql = "SELECT * FROM products"; // select all products from database
     $featured = mysqli_query($con, $sql); // query database
-    
 ?>
 
 <!DOCTYPE html>
@@ -61,22 +60,25 @@
         </tr>
         </tbody>
     </table>
-        
 
     <div style="padding-left: 75px; padding-bottom:30px;">
             <label for="transactionId">Transaction ID:</label>
             <input type="text" id="transactionId" placeholder="Enter Transaction ID">
             <button class="payment-button">Fetch Transaction</button>
-        </div>
+    </div>
 
-        <hr class="dashed-line">     
+    <hr class="dashed-line">     
 
-        <div id="receiptContainer" style="padding-left: 50px; padding-top: 20px;">
-          <h2 class="header" style="color: green">Receipt:</h2>
-            <div id="receiptContent"></div>
-        </div>
+    <div id="receiptContainer" style="padding-left: 50px; padding-top: 20px;">
+        <h2 class="header" style="color: green">Receipt:</h2>
+        <div id="receiptContent"></div>
+    </div>
 
-        <table style="padding-left:50px">
+    <button id="completePaymentBtn" class="finish-payment-button">Complete Payment</button>
+
+    <!-- TODO: hide this table until the user clicks the button "Complete Payment" -->
+    <div class="paymentTable" id="paymentTableID">
+        <table>
             <thead>
                 <th>Image</th>
                 <th>Name</th>
@@ -110,7 +112,7 @@
             </tr>
             </tbody>
         </table>
-
+    </div>
 
     <script>
         async function fetchTransaction(transactionId){
@@ -151,7 +153,7 @@
                 <p>Transaction ID: ${transaction.txidString}</p>`;
             receiptContent.innerHTML = transactionHTML;
         }
-    }
+        }   
 
         document.getElementById('fetchButton').addEventListener('click', function(){
             const transactionId = document.getElementById('transactionId').value;
@@ -162,9 +164,8 @@
                 alert('Please enter a valid Transaction ID.');
             }
         });
-    </script>
 
-    <!-- TODO: clear cart after selecting button to pay -->
+    </script>
 
     <a href="index.php" style="padding-left:30px">Back to Home</a><br><br>
 
