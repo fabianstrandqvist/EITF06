@@ -2,7 +2,7 @@
 
 #blockchain.js
 
-1. Start by opening a terminal and run the blockchain.js file, using node:
+1. Start by opening a terminal and then run the blockchain.js file, using node:
 
   'node blockchain.js'
 
