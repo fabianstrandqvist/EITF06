@@ -1,17 +1,36 @@
-# EITF06
+# EITF06: Web Shop Under Attack
 
-#blockchain.js
+Web-based shopping demo with a PHP storefront, login and cart flow, checkout and receipt pages, and a Node.js blockchain service for recording transactions.
 
-1. Start by opening a terminal and then run the blockchain.js file, using node:
+## Overview
+This repository demonstrates a security-focused e-commerce system built with PHP, JavaScript, and Node.js. It includes product browsing, cart management, payment/receipt handling, and a custom blockchain server that stores signed transactions and exposes them to the receipt page. The project also explores common web attack surfaces and defenses such as session handling, CSRF tokens, input sanitization, and transaction logging.
 
-  'node blockchain.js'
+## Project report
+- [EITF06 Project Report PDF](https://drive.google.com/file/d/1-kXlotUM2bsS-DlQBQGMGt8TuV_Pvf12/view?usp=sharing) — project writeup covering the web shop, security considerations, and blockchain-based receipt flow.
 
-  The blockchain will now be listening on port 3000.
+## What’s included
+- `index.php` — home page for the web shop.
+- `products.php` — product listing and shopping cart management.
+- `cart.php` — cart-related page logic.
+- `checkout.php` and `payment.php` — checkout and payment flow.
+- `receipt.php` and `receipt.js` — receipt page and blockchain transaction lookup.
+- `login1.php`, `signup1.php`, `logout1.php`, and `startsession.php` — authentication and session handling.
+- `blockchain.js` — Node.js blockchain server for adding and retrieving transactions.
+- `transaction.js` — client-side helper for fetching transaction data.
+- `connection1.php`, `functions1.php`, and `test.php` — database and shared PHP helpers.
+- `images/` — storefront assets.
+- `commonpasswords.txt` — password blacklist data.
+- `styles.css` and `log_sign.css` — site styling.
 
-2. Open a separate terminal, here you will send your transactions to the blockchain.
+## Quick start
+1. Start the blockchain server:
 
-  To send transactions (on MacOS) to the blockchain you would use: 
+   `node blockchain.js`
 
-  'curl -X POST -H "Content-Type: application/json" -d '{"sender":"aed106ae7fd3dbec3943418b1f7537d76b4f066ec7930056769a71999923412c", "amount":100, "privateKey":"-----BEGIN EC PRIVATE KEY----- MHQCAQEEIPQUkZgiAQmTFZadXXDqFgwWPKhbzt8NQqg3Zg27QH0coAcGBSuBBAAK   oUQDQgAEDDsUwv89FMzsP0C64kfWeF6iQis4rLP+OzuoQBfmOc5Xh/zl0jmb+dSF Eiwh0cwGQtTeIkiRHho2pUqppheAvw== -----END EC PRIVATE KEY-----"}' http://localhost:3000/addTransaction'
+2. The server listens on port 3000 and accepts transaction requests at `/addTransaction`.
 
-  You can specify your wallet (sender), amount, and your private key yourself.
+## Notes
+- The PHP storefront expects a local PHP/MySQL environment.
+- The blockchain service is used by the receipt flow to display transaction details after checkout.
+
+
